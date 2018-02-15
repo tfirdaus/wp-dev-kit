@@ -1,0 +1,85 @@
+version: '3'
+services:
+
+  wordpress-php5.4:
+    image: tfirdaus/wp-docklines:php5.4-fpm-alpine
+    working_dir: ${WP_PROJECT_DIR}
+    restart: on-failure
+    depends_on:
+      - database
+    file_env:
+        - ./.env-wordpress
+    volumes:
+      - ../:${WP_PROJECT_DIR}
+      - wp-core:/tmp/wordpress/
+      - wp-tests-dir:/tmp/wordpress-tests-lib
+
+  wordpress-php5.6:
+    image: tfirdaus/wp-docklines:php5.6-fpm-alpine
+    working_dir: ${WP_PROJECT_DIR}
+    restart: on-failure
+    depends_on:
+      - database
+    file_env:
+        - ./.env-wordpress
+    volumes:
+      - ../:${WP_PROJECT_DIR}
+      - wp-core:/tmp/wordpress/
+      - wp-tests-dir:/tmp/wordpress-tests-lib
+
+  wordpress-php7.0:
+    image: tfirdaus/wp-docklines:php7.0-fpm-alpine
+    working_dir: ${WP_PROJECT_DIR}
+    restart: on-failure
+    depends_on:
+      - database
+    file_env:
+        - ./.env-wordpress
+    volumes:
+      - ../:${WP_PROJECT_DIR}
+      - wp-core:/tmp/wordpress/
+      - wp-tests-dir:/tmp/wordpress-tests-lib
+
+  wordpress-php7.1:
+    image: tfirdaus/wp-docklines:php7.1-fpm-alpine
+    working_dir: ${WP_PROJECT_DIR}
+    restart: on-failure
+    depends_on:
+      - database
+    file_env:
+        - ./.env-wordpress
+    volumes:
+      - ../:${WP_PROJECT_DIR}
+      - wp-core:/tmp/wordpress/
+      - wp-tests-dir:/tmp/wordpress-tests-lib
+
+  wordpress-php7.2:
+    image: tfirdaus/wp-docklines:php7.2-fpm-alpine
+    working_dir: ${WP_PROJECT_DIR}
+    restart: on-failure
+    depends_on:
+      - database
+    file_env:
+        - ./.env-wordpress
+    volumes:
+      - ../:${WP_PROJECT_DIR}
+      - wp-core:/tmp/wordpress/
+      - wp-tests-dir:/tmp/wordpress-tests-lib
+
+  database:
+    image: ${DB_IMAGE}
+    restart: on-failure
+    file_env:
+        - ./.env-database
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+# Cache the database.
+volumes:
+  mysql:
+  wp-core:
+  wp-tests-dir:
