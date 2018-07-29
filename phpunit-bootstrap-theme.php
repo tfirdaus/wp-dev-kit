@@ -26,9 +26,14 @@ if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
 
+/**
+ * Register and load the theme.
+ *
+ * @return void
+ */
 function _register_theme() {
 
-	$theme_dir = dirname( dirname( __FILE__ ) );
+	$theme_dir     = dirname( dirname( __FILE__ ) );
 	$current_theme = basename( $theme_dir );
 
 	register_theme_directory( dirname( $theme_dir ) );
