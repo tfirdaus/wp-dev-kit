@@ -10,6 +10,6 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = tab
 
-[{*.js,*.json,*.yml,.eslint*}]
+[*.{es,js,jsx,json,yml,eslint}]
 indent_style = space
 indent_size = 2
