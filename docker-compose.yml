@@ -1,81 +1,85 @@
 version: '3'
 services:
 
-  wordpress-php5.4:
-    container_name: wordpress-test-php5.4
-    image: tfirdaus/wp-docklines:php5.4-fpm
-    working_dir: ${WP_PROJECT_DIR}
+  # Localhost configuration.
+  wordpress:
+    image: ${WP_IMAGE}
+    working_dir: ${WP_ROOT_DIR}
+    ports:
+      - "${WP_PUBLISHED_PORT}:80"
+      - "${WP_PUBLISHED_PORT_HTTPS}:443"
     restart: on-failure
     depends_on:
       - database
+      - phpmyadmin
     volumes:
-      - ../:${WP_PROJECT_DIR}
-      - wp-tmp-core:/tmp/wordpress/
-      - wp-tmp-tests-dir:/tmp/wordpress-tests-lib
-
-  wordpress-php5.6:
-    container_name: wordpress-test-php5.6
-    image: tfirdaus/wp-docklines:php5.6-fpm-alpine
-    working_dir: ${WP_PROJECT_DIR}
-    restart: on-failure
-    depends_on:
-      - database
-    volumes:
-      - ../:${WP_PROJECT_DIR}
-      - wp-tmp-core:/tmp/wordpress/
-      - wp-tmp-tests-dir:/tmp/wordpress-tests-lib
-
-  wordpress-php7.0:
-    container_name: wordpress-test-php7.0
-    image: tfirdaus/wp-docklines:php7.0-fpm-alpine
-    working_dir: ${WP_PROJECT_DIR}
-    restart: on-failure
-    depends_on:
-      - database
-    volumes:
-      - ../:${WP_PROJECT_DIR}
-      - wp-tmp-core:/tmp/wordpress/
-      - wp-tmp-tests-dir:/tmp/wordpress-tests-lib
-
-  wordpress-php7.1:
-    container_name: wordpress-test-php7.1
-    image: tfirdaus/wp-docklines:php7.1-fpm-alpine
-    working_dir: ${WP_PROJECT_DIR}
-    restart: on-failure
-    depends_on:
-      - database
-    volumes:
-      - ../:${WP_PROJECT_DIR}
-      - wp-tmp-core:/tmp/wordpress/
-      - wp-tmp-tests-dir:/tmp/wordpress-tests-lib
-
-  wordpress-default:
-    container_name: wordpress-test-php7.2
-    image: tfirdaus/wp-docklines:php7.2-fpm-alpine
-    working_dir: ${WP_PROJECT_DIR}
-    restart: on-failure
-    depends_on:
-      - database
-    volumes:
-      - ../:${WP_PROJECT_DIR}
-      - wp-tmp-core:/tmp/wordpress/
-      - wp-tmp-tests-dir:/tmp/wordpress-tests-lib
+      - ./:${WP_PROJECT_DIR}
+      - www:${WP_ROOT_DIR}
+    environment:
+      WORDPRESS_DB_HOST: ${DB_HOST}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
 
   database:
-    image: mysql:5.5
-    container_name: mysql-test-database
-    restart: on-failure
+    image: ${DB_IMAGE}
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "${DB_PUBLISHED_PORT}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
 
-# Cache the database.
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - database
+    restart: on-failure
+    ports:
+      - "${PMA_PUBLISHED_PORT}:80"
+    environment:
+      - PMA_HOST=${DB_HOST}
+
+  # Tooling and Package Manager
+  node:
+    image: ${NODE_IMAGE}
+    working_dir: ${NODE_PROJECT_DIR}
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./:${NODE_PROJECT_DIR}
+
+  composer:
+    image: ${COMPOSER_IMAGE}
+    working_dir: ${COMPOSER_PROJECT_DIR}
+    volumes:
+      - ./:${COMPOSER_PROJECT_DIR}
+
+  # Unit and Integration Tests
+  wordpress_php7.2:
+    image: tfirdaus/wp-docklines:php7.2-fpm-alpine
+    working_dir: ${WP_PROJECT_DIR}
+    depends_on:
+      - database
+    volumes:
+      - ./:${WP_PROJECT_DIR}
+      - wp_tests_core:/tmp/wordpress/
+      - wp_tests_dir:/tmp/wordpress-tests-lib
+    environment:
+      WP_TESTS_ACTIVATED_PLUGINS: gutenberg
+
+      # Passed some variables to install-wp-tests.sh
+      DB_NAME: wordpress_tests
+      DB_USER: root
+      DB_HOST: ${DB_HOST}
+      DB_PASSWORD: ${DB_ROOT_PASSWORD}
+
+# Caches
 volumes:
-  mysql:
-  wp-dir:
-  wp-tmp-core:
-  wp-tmp-tests-dir:
+  www:
+  mysql_data:
+  wp_tests_core:
+  wp_tests_dir:
