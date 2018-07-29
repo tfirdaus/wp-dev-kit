@@ -45,6 +45,13 @@ npm-debug.log
 ######################
 *.min.css
 *.min.js
-*.css
-*.js
 *.map
+
+# Composer #
+######################
+/vendor/
+
+# Build or Dist directory #
+######################
+/dist/
+/build/
