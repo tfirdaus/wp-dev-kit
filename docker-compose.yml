@@ -69,8 +69,6 @@ services:
       - wp_tests_core:/tmp/wordpress/
       - wp_tests_dir:/tmp/wordpress-tests-lib
     environment:
-      WP_TESTS_ACTIVATED_PLUGINS: gutenberg
-
       # Passed some variables to install-wp-tests.sh
       DB_NAME: wordpress_tests
       DB_USER: root
