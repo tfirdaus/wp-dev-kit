@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.1.1] - 2018-11-04
+
+### Changed
+
+- Remove the PHP version config. Let the project decide the PHP version supported.
+
 ## 0.1.0 - 2018-08-16
 
 ### Added
@@ -17,4 +23,5 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - EditorConfig configuration file.
 - Shell scripts, [wp-shell-localhost](https://github.com/tfirdaus/wp-shell-localhost) and [wp-shell-pipelines](https://github.com/tfirdaus/wp-shell-pipelines) (as a submodule).
 
-[Unreleased]: https://github.com/tfirdaus/wp-dev-kit/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/tfirdaus/wp-dev-kit/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/tfirdaus/wp-dev-kit/compare/v0.1.0...v0.1.1
