@@ -88,7 +88,7 @@ unset( $_plugin_deps, $_plugin_candidate, $_plugin_file_candidate, $_plugin_file
  *
  * @return void
  */
-function manually_load_plugin() {
+function _manually_load_plugin() {
 
 	/**
 	 * Load the plugin dependencies
@@ -115,7 +115,7 @@ function manually_load_plugin() {
 	}
 	unset( $_plugin_dep_files, $_project_files );
 }
-tests_add_filter( 'muplugins_loaded', 'manually_load_plugin' );
+tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
