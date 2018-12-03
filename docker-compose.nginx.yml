@@ -1,0 +1,91 @@
+version: '3'
+services:
+
+  wordpress:
+    image: ${WP_IMAGE}
+    working_dir: ${WP_ROOT_DIR}
+    restart: on-failure
+    depends_on:
+      - database
+      - phpmyadmin
+      - nginx
+    volumes:
+      - ./:${WP_PROJECT_DIR}
+      - www:${WP_ROOT_DIR}
+    environment:
+      WORDPRESS_DB_HOST: ${DB_HOST}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+
+  nginx:
+    image: ${NGINX_IMAGE}
+    working_dir: ${WP_ROOT_DIR}
+    restart: on-failure
+    ports:
+      - "${WP_PUBLISHED_PORT}:80"
+      - "${WP_PUBLISHED_PORT_HTTPS}:443"
+    volumes:
+      - ./:${WP_PROJECT_DIR}
+      - www:${WP_ROOT_DIR}
+
+  database:
+    image: ${DB_IMAGE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "${DB_PUBLISHED_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - database
+    restart: on-failure
+    ports:
+      - "${PMA_PUBLISHED_PORT}:80"
+    environment:
+      - PMA_HOST=${DB_HOST}
+
+  # Tooling and Package Manager
+  node:
+    image: ${NODE_IMAGE}
+    working_dir: ${NODE_PROJECT_DIR}
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./:${NODE_PROJECT_DIR}
+
+  composer:
+    image: ${COMPOSER_IMAGE}
+    working_dir: ${COMPOSER_PROJECT_DIR}
+    volumes:
+      - ./:${COMPOSER_PROJECT_DIR}
+
+  # Unit and Integration Tests
+  wordpress_tests:
+    image: tfirdaus/wp-docklines:php7.2-fpm-alpine
+    working_dir: ${WP_PROJECT_DIR}
+    depends_on:
+      - database
+    volumes:
+      - ./:${WP_PROJECT_DIR}
+      - wp_tests_core:/tmp/wordpress/
+      - wp_tests_dir:/tmp/wordpress-tests-lib
+    environment:
+      # Passed some variables to install-wp-tests.sh
+      DB_NAME: wordpress_tests
+      DB_USER: root
+      DB_HOST: ${DB_HOST}
+      DB_PASSWORD: ${DB_ROOT_PASSWORD}
+
+# Caches
+volumes:
+  www:
+  mysql_data:
+  wp_tests_core:
+  wp_tests_dir:
