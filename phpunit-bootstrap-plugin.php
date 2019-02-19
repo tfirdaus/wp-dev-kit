@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file for WordPress plugin
  *
- * @package WP_Chimp/Tests
+ * @package WP_Chimp_Tests
  * @since 0.1.0
  */
 
@@ -32,6 +32,7 @@ $_composer_dir = dirname( __DIR__ ) . '/vendor';
 if ( file_exists( $_composer_dir . '/antecedent/patchwork/Patchwork.php' ) ) {
 	require_once $_composer_dir . '/antecedent/patchwork/Patchwork.php';
 }
+
 if ( file_exists( $_composer_dir . '/autoload.php' ) ) {
 	require_once $_composer_dir . '/autoload.php';
 }
@@ -61,7 +62,7 @@ foreach ( glob( $_project_dir . '/*.php' ) as $_project_file_candidate ) {
 if ( ! isset( $_project_files ) ) {
 	throw new Exception( 'Unable to locate a file containing a plugin metadata block.' );
 }
-unset( $_project_dir, $_project_file_candidate, $_project_file_src, $_composer_dir );
+unset( $_project_file_candidate, $_project_file_src, $_composer_dir );
 
 /**
  * Get the plugin dependencies
@@ -119,3 +120,9 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
+
+// Load a custom UnitTestCase if available.
+if ( file_exists( $_project_dir . '/tests/testcase.php' ) ) {
+	require_once $_project_dir . '/tests/testcase.php';
+}
+unset( $_project_dir );

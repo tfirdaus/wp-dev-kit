@@ -50,3 +50,9 @@ tests_add_filter( 'muplugins_loaded', '_register_theme' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
+
+// Load a custom UnitTestCase if available.
+if ( file_exists( $_project_dir . '/tests/testcase.php' ) ) {
+	require_once $_project_dir . '/tests/testcase.php';
+}
+unset( $_project_dir );
