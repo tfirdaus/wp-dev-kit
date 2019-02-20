@@ -13,7 +13,7 @@ services:
       - database
       - phpmyadmin
     volumes:
-      - ./:${WP_PROJECT_DIR}
+      - ${WP_PROJECT_SRC}:${WP_PROJECT_DIR}
       - www:${WP_ROOT_DIR}
     environment:
       WORDPRESS_DB_HOST: ${DB_HOST}
@@ -50,13 +50,13 @@ services:
     environment:
       NODE_ENV: development
     volumes:
-      - ./:${NODE_PROJECT_DIR}
+      - ${NODE_PROJECT_SRC}:${NODE_PROJECT_DIR}
 
   composer:
     image: ${COMPOSER_IMAGE}
     working_dir: ${COMPOSER_PROJECT_DIR}
     volumes:
-      - ./:${COMPOSER_PROJECT_DIR}
+      - ${COMPOSER_PROJECT_SRC}:${COMPOSER_PROJECT_DIR}
 
   # Unit and Integration Tests
   wordpress_tests:
@@ -65,7 +65,7 @@ services:
     depends_on:
       - database
     volumes:
-      - ./:${WP_PROJECT_DIR}
+      - ${WP_PROJECT_SRC}:${WP_PROJECT_DIR}
       - wp_tests_core:/tmp/wordpress/
       - wp_tests_dir:/tmp/wordpress-tests-lib
     environment:
