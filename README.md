@@ -2,7 +2,7 @@
 
 > A collection tools and common codes for WordPress development.
 
-Inspired by [WP Dev Lib](https://github.com/xwp/wp-dev-lib) from [XWP](https://github.com/xwp), **WP Dev Kit** puts together a set of tools, common codes, and some opinitiated development configurations used in WordPress development.
+Inspired from [WP Dev Lib](https://github.com/xwp/wp-dev-lib) from [XWP](https://github.com/xwp), **WP Dev Kit** puts together a set of tools, common codes, and some opinitiated development configurations used in WordPress development.
 
 It includes:
 
