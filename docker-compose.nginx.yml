@@ -67,18 +67,18 @@ services:
       - ${COMPOSER_PROJECT_SRC}:${COMPOSER_PROJECT_DIR}
 
   # Unit and Integration Tests
-  wordpress_tests:
+  wp_test:
     image: tfirdaus/wp-docklines:php7.2-fpm-alpine
     working_dir: ${WP_PROJECT_DIR}
     depends_on:
       - database
     volumes:
       - ${WP_PROJECT_SRC}:${WP_PROJECT_DIR}
-      - wp_tests_core:/tmp/wordpress/
-      - wp_tests_dir:/tmp/wordpress-tests-lib
+      - wp_test_core:/tmp/wordpress/
+      - wp_test_dir:/tmp/wordpress-tests-lib
     environment:
       # Passed some variables to install-wp-tests.sh
-      DB_NAME: wordpress_tests
+      DB_NAME: wp_test
       DB_USER: root
       DB_HOST: ${DB_HOST}
       DB_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -87,5 +87,5 @@ services:
 volumes:
   www:
   mysql_data:
-  wp_tests_core:
-  wp_tests_dir:
+  wp_test_core:
+  wp_test_dir:
