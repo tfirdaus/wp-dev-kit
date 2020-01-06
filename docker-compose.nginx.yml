@@ -64,6 +64,7 @@ services:
     image: ${COMPOSER_IMAGE}
     working_dir: ${COMPOSER_PROJECT_DIR}
     volumes:
+      - composer_cache:/tmp/cache
       - ${COMPOSER_PROJECT_SRC}:${COMPOSER_PROJECT_DIR}
 
   # Unit and Integration Tests
@@ -89,3 +90,4 @@ volumes:
   mysql_data:
   wp_test_core:
   wp_test_dir:
+  composer_cache:
