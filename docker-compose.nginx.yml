@@ -60,13 +60,6 @@ services:
     volumes:
       - ${NODE_PROJECT_SRC}:${NODE_PROJECT_DIR}
 
-  composer:
-    image: ${COMPOSER_IMAGE}
-    working_dir: ${COMPOSER_PROJECT_DIR}
-    volumes:
-      - composer_cache:/tmp/cache
-      - ${COMPOSER_PROJECT_SRC}:${COMPOSER_PROJECT_DIR}
-
   # Unit and Integration Tests
   wp_test:
     image: tfirdaus/wp-docklines:php7.2-fpm-alpine
