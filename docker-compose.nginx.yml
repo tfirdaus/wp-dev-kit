@@ -62,7 +62,7 @@ services:
 
   # Unit and Integration Tests
   wp_test:
-    image: tfirdaus/wp-docklines:php7.2-fpm-alpine
+    image: ${WP_TEST_IMAGE}
     working_dir: ${WP_PROJECT_DIR}
     depends_on:
       - database
